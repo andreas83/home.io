@@ -1,28 +1,26 @@
-Home.io - DIY Gebäudemonitoring
+# Home.io - DIY Gebäudemonitoring
 
-Boards:
+## Boards
 3x ESP8266 nodemcu 
 1x Arduino Uno
 1x Raspberry
 
-Sensoren:
+## Sensoren
 
 2x DHT22 Temp und Humidity 
 1x Lichtsensor LM393
 1x Geräuschsensor LM393
+1x HC-SR04  Abstandssensor für den Füllstand der Tankanlage
 
-Zu kaufen
-Ultraschall Abstandssensor 
-
-Software
-Server:
+## Software
+**Server**
 Dashboard - home.io (in entwicklung)
 
-Sensorboards:
-NCMCU (in plannung)
+**Sensorboards**
+Nodemcu (in plannung)
 
 
-Preamble
-Vorläufiges Ziel ist es den ÖLVerbrauch, sowie die wichtigsten Umgebungsparameter (Innen und Außentemperatur) zu messen.
+## Preamble
+Vorläufiges Ziel ist es den ÖL-Verbrauch, sowie die wichtigsten Umgebungsparameter (Innen und Außentemperatur) zu messen.
 Die erfassten Daten sollen dann Visualisiert werden, um zukünftige Sanierungsarbeiten auch unter den Gesichtspunkt der Nachhaltigkeit bewerten zu können. 
-Weiter ist geplant neben ÖLVerbrauch auch Wasser und Strom zu erfassen und die Verbrauchsdaten auf ein Display sichtbar zu machen.
+Weiter ist geplant neben ÖL-Verbrauch auch Wasser und Strom zu erfassen und die Verbrauchsdaten auf ein Display sichtbar zu machen.
