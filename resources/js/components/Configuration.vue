@@ -1,20 +1,49 @@
     <template>
-        <div class="flex-center position-ref full-height">
-            <div class="content">
-                <div class="title m-b-md">
-			Sensor Configuration
-                </div>
+<div class="row">
+<div class="col-md-6">
+	<h1 class="text-center">Sensor Configuration</h1>
 
+	<div><pre>{{ rawData }}</pre></div>
+</div>
+<div class="col-md-6">
+<router-link :to="{ name: 'edit', params: { id: 0 }}">
+    <input type="button" value="Add Sensor" class="btn btn-small btn-success" >
+</router-link>
 
-		<input type="button">
-		  <div v-for="sensor in sensors">
+<table class="table table-hover table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Sensor</th>
+      <th scope="col">Location</th>
+      <th scope="col">Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="sensor in sensors">
+	<td>
+		    {{ sensor.id}}
+	</td>
+	<td>
 		    {{ sensor.name }}
+	</td>
+	<td>
 		    {{ sensor.location }}
-		  </div>
+	</td>
+	<td>
+		<input type="button" value="RAW Data" class="btn btn-small btn-warning" v-on:click="showRaw(sensor.id)">
 
-            </div>
-
-        </div>
+		<router-link :to="{ name: 'edit', params: { id: sensor.id }}">
+		<input type="button" value="Edit" class="btn btn-small btn-success">
+		</router-link>
+		
+		<input type="button" value="Delete" class="btn btn-small btn-danger">
+	</td>
+	</tr>
+</tbody>
+</table>
+</div>
+</div>
     </template>
 
     <script>
@@ -25,10 +54,22 @@
         },
         data() {
             return {
-              sensors: ""
+              sensors: "",
+              rawData: ""
             };
         },
         methods: {
+	    showRaw(id){
+                let currentObj = this;
+
+                axios.get('/api/sensors/'+id+'/data', {      })
+                .then(function (response) {
+                    currentObj.rawData = response.data;
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+	    },
             getSensors() {
                 let currentObj = this;
                 axios.get('/api/sensors/', {      })
@@ -44,42 +85,4 @@
     </script>
 
     <style scoped>
-        html, body {
-            background-color: #fff;
-            color: #939b9f;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 100;
-            height: 100vh;
-            margin: 0;
-        }
-        .title {
-            font-size: 60px;
-        }
-        .subtitle {
-            font-size: 20px;
-        }
-        .full-height {
-            height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-        .position-ref {
-            position: relative;
-        }
-
-        .top-right {
-            position: absolute;
-            right: 10px;
-            top: 18px;
-        }
-        .content {
-            text-align: center;
-        }
-        .m-b-md {
-            margin-bottom: 30px;
-        }
     </style>

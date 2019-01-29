@@ -16,12 +16,12 @@ class CreateSensorsTable extends Migration
 	Schema::create('sensors', function($table)
 	{
 		$table->increments('id');
-                $table->integer('user_id')->unsigned();
+                $table->integer('user_id')->unsigned()->default(1);
                 $table->foreign('user_id')->references('id')->on('users');
 
 		$table->char('name', 100);
-		$table->char('location', 100);
-		$table->char('type', 100);
+		$table->char('location', 100)->default("");
+		$table->char('type', 100)->default("char");
 		$table->text('description');
 		$table->timestamps();
 

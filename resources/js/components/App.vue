@@ -1,5 +1,5 @@
     <template>
-        <div>
+        <div class="container-fluid">
                 <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
                 <div class="container">
                     <ul class="navbar-nav">
