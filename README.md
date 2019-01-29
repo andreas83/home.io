@@ -24,3 +24,8 @@ Nodemcu (in plannung)
 Vorläufiges Ziel ist es den ÖL-Verbrauch, sowie die wichtigsten Umgebungsparameter (Innen und Außentemperatur) zu messen.
 Die erfassten Daten sollen dann Visualisiert werden, um zukünftige Sanierungsarbeiten auch unter den Gesichtspunkt der Nachhaltigkeit bewerten zu können. 
 Weiter ist geplant neben ÖL-Verbrauch auch Wasser und Strom zu erfassen und die Verbrauchsdaten auf ein Display sichtbar zu machen.
+
+
+## Screenshot
+
+![](https://social.codejungle.org/upload/5c4f982e7bacb4.55207020_Screenshot_20190129_005953.png)
