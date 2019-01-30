@@ -5,8 +5,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './components/App'
 import Welcome from './components/Welcome'
-import Configuration from './components/Configuration'
-import Edit from './components/Edit'
+import ListSensor from './components/ListSensor'
+import EditSensor from './components/EditSensor'
 
 
 Vue.use(VueRouter)
@@ -19,17 +19,16 @@ Vue.use(VueRouter)
                 path: '/home',
                 name: 'welcome',
                 component: Welcome,
-                props: { title: "This is the SPA home" }
             },
             {
-                path: '/configuration',
-                name: 'configuration',
-                component: Configuration
+                path: '/list/sensor',
+                name: 'ListSensor',
+                component: ListSensor
             },    
             {
                 path: '/sensor/edit/:id',
-                name: 'edit',
-                component: Edit
+                name: 'EditSensor',
+                component: EditSensor
             },    
         ],
     })

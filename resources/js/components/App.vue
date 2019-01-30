@@ -4,7 +4,7 @@
                 <div class="container">
                     <ul class="navbar-nav">
                         <router-link :to="{ name: 'welcome' }" class="nav-link">Home</router-link>
-                        <router-link :to="{ name: 'configuration' }" class="nav-link" >Sensor Configuration</router-link>
+                        <router-link :to="{ name: 'ListSensor' }" class="nav-link" >Sensor Configuration</router-link>
                     </ul>
                 </div>
             </nav>

@@ -6,7 +6,7 @@
 	<div><pre>{{ rawData }}</pre></div>
 </div>
 <div class="col-md-6">
-<router-link :to="{ name: 'edit', params: { id: 0 }}">
+<router-link :to="{ name: 'EditSensor', params: { id: 0 }}">
     <input type="button" value="Add Sensor" class="btn btn-small btn-success" >
 </router-link>
 
@@ -33,11 +33,11 @@
 	<td>
 		<input type="button" value="RAW Data" class="btn btn-small btn-warning" v-on:click="showRaw(sensor.id)">
 
-		<router-link :to="{ name: 'edit', params: { id: sensor.id }}">
+		<router-link :to="{ name: 'EditSensor', params: { id: sensor.id }}">
 		<input type="button" value="Edit" class="btn btn-small btn-success">
 		</router-link>
 		
-		<input type="button" value="Delete" class="btn btn-small btn-danger">
+		<input type="button" value="Delete" class="btn btn-small btn-danger" v-on:click="deleteSensor(sensor.id)">
 	</td>
 	</tr>
 </tbody>
@@ -79,7 +79,10 @@
                 .catch(function (error) {
                     currentObj.output = error;
                 });
-            }
+            },
+	    deleteSensor(id){
+
+	    }
         }
     }
     </script>
