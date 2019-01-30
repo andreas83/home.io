@@ -4,6 +4,7 @@
 		<h1 class="text-center"> Edit Sensor {{sensor.name}}</h1>
 	</div>
 	<div class="col-md-6">
+            <b-alert variant="success" :show="show" dismissible>Saved</b-alert>
 	<form>
 		<input type="button" value="Delete" class="btn btn-small btn-danger">
 		<input type="button" value="Save" class="btn btn-small btn-success" v-on:click="save()">
@@ -46,7 +47,8 @@
 			name:"test",
 			location: "",
 			description: ""
-		}
+		},
+                show: ""
             };
         },
         methods: {
@@ -59,6 +61,7 @@
                 axios.post('/api/sensors/', sensor)
                 .then(function (response) {
                     currentObj.sensor = response.data;
+                    currentObj.show=true;
                 })
                 .catch(function (error) {
                     currentObj.output = error;

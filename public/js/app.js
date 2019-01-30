@@ -33543,7 +33543,7 @@ return jQuery;
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.14.6
+ * @version 1.14.7
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -34111,7 +34111,11 @@ function isFixed(element) {
   if (getStyleComputedProperty(element, 'position') === 'fixed') {
     return true;
   }
-  return isFixed(getParentNode(element));
+  var parentNode = getParentNode(element);
+  if (!parentNode) {
+    return false;
+  }
+  return isFixed(parentNode);
 }
 
 /**
@@ -34767,18 +34771,23 @@ function getRoundedOffsets(data, shouldRound) {
   var _data$offsets = data.offsets,
       popper = _data$offsets.popper,
       reference = _data$offsets.reference;
+  var round = Math.round,
+      floor = Math.floor;
 
-
-  var isVertical = ['left', 'right'].indexOf(data.placement) !== -1;
-  var isVariation = data.placement.indexOf('-') !== -1;
-  var sameWidthOddness = reference.width % 2 === popper.width % 2;
-  var bothOddWidth = reference.width % 2 === 1 && popper.width % 2 === 1;
   var noRound = function noRound(v) {
     return v;
   };
 
-  var horizontalToInteger = !shouldRound ? noRound : isVertical || isVariation || sameWidthOddness ? Math.round : Math.floor;
-  var verticalToInteger = !shouldRound ? noRound : Math.round;
+  var referenceWidth = round(reference.width);
+  var popperWidth = round(popper.width);
+
+  var isVertical = ['left', 'right'].indexOf(data.placement) !== -1;
+  var isVariation = data.placement.indexOf('-') !== -1;
+  var sameWidthParity = referenceWidth % 2 === popperWidth % 2;
+  var bothOddWidth = referenceWidth % 2 === 1 && popperWidth % 2 === 1;
+
+  var horizontalToInteger = !shouldRound ? noRound : isVertical || isVariation || sameWidthParity ? round : floor;
+  var verticalToInteger = !shouldRound ? noRound : round;
 
   return {
     left: horizontalToInteger(bothOddWidth && !isVariation && shouldRound ? popper.left - 1 : popper.left),
@@ -47838,7 +47847,7 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed (from ./node_modules/css-loader/dist/cjs.js):\nModuleNotFoundError: Module not found: Error: Can't resolve './bootstrap-vue/dist/bootstrap-vue.css' in '/home/andreas/dev/home.io/resources/sass'\n    at factory.create (/home/andreas/dev/home.io/node_modules/webpack/lib/Compilation.js:823:10)\n    at factory (/home/andreas/dev/home.io/node_modules/webpack/lib/NormalModuleFactory.js:397:22)\n    at resolver (/home/andreas/dev/home.io/node_modules/webpack/lib/NormalModuleFactory.js:130:21)\n    at asyncLib.parallel (/home/andreas/dev/home.io/node_modules/webpack/lib/NormalModuleFactory.js:224:22)\n    at /home/andreas/dev/home.io/node_modules/neo-async/async.js:2825:7\n    at /home/andreas/dev/home.io/node_modules/neo-async/async.js:6886:13\n    at normalResolver.resolve (/home/andreas/dev/home.io/node_modules/webpack/lib/NormalModuleFactory.js:214:25)\n    at doResolve (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/Resolver.js:184:12)\n    at hook.callAsync (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/Resolver.js:238:5)\n    at _fn0 (eval at create (/home/andreas/dev/home.io/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:15:1)\n    at resolver.doResolve (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/UnsafeCachePlugin.js:37:5)\n    at hook.callAsync (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/Resolver.js:238:5)\n    at _fn0 (eval at create (/home/andreas/dev/home.io/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:15:1)\n    at hook.callAsync (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/Resolver.js:238:5)\n    at _fn0 (eval at create (/home/andreas/dev/home.io/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:12:1)\n    at resolver.doResolve (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:42:38)\n    at hook.callAsync (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/Resolver.js:238:5)\n    at _fn43 (eval at create (/home/andreas/dev/home.io/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:402:1)\n    at hook.callAsync (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/Resolver.js:238:5)\n    at _fn0 (eval at create (/home/andreas/dev/home.io/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:12:1)\n    at resolver.doResolve (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:42:38)\n    at hook.callAsync (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/Resolver.js:238:5)\n    at _fn1 (eval at create (/home/andreas/dev/home.io/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:24:1)\n    at hook.callAsync (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/Resolver.js:238:5)\n    at _fn0 (eval at create (/home/andreas/dev/home.io/node_modules/tapable/lib/HookCodeFactory.js:32:10), <anonymous>:15:1)\n    at fs.stat (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/DirectoryExistsPlugin.js:22:13)\n    at process.nextTick (/home/andreas/dev/home.io/node_modules/enhanced-resolve/lib/CachedInputFileSystem.js:73:15)\n    at _combinedTickCallback (internal/process/next_tick.js:132:7)\n    at process._tickCallback (internal/process/next_tick.js:181:9)");
 
 /***/ }),
 
@@ -47849,8 +47858,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/lissi/dev/homeio/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/lissi/dev/homeio/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/andreas/dev/home.io/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/andreas/dev/home.io/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

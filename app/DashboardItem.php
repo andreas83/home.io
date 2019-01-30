@@ -4,16 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sensor extends Model
+class DashboardItem extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'location', 'description', 'icon',
+        'sensor_id', 'dashboard_id', 'chart_key', 'sensor_data_val', 'sensor_data_key'
     ];
-
 }

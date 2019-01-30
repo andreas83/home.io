@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use App\Sensor;
 use App\SensorData;
+use App\Dashboard;
+use App\DashboardItem;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +21,33 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::get('dashboards', function() {
+
+    return Dashboard::all();
+});
+
+ Route::post('dashboards', function(Request $request) {
+    return Dashboard::create($request->all());
+});
+Route::get('dashboards/{id}', function($id) {
+    return Dashboard::find($id);
+});
+Route::put('dashboards/{id}', function(Request $request, $id) {
+    $dash = Dashboard::findOrFail($id);
+    $dash->update($request->all());
+
+    return $dash;
+});
+
+Route::post('dashboard/item', function(Request $request) {
+    return DashboardItem::create($request->all());
+});
+Route::get('dashboard/{id}/items', function($id) {
+    return DashboardItem::where("dashboard_id", $id)->get();
+});
+
+
 Route::get('sensors', function() {
     // If the Content-Type and Accept headers are set to 'application/json', 
     // this will return a JSON structure. This will be cleaned up later.
@@ -30,6 +60,13 @@ Route::get('sensors/{id}', function($id) {
 
 Route::get('sensors/{id}/data', function($id) {
     return SensorData::where("sensor_id", $id)->get();
+});
+Route::get('sensors/{id}/data/key', function($id) {
+    return SensorData::select("key")->where("sensor_id", $id)->groupBy("key")->get();
+});
+
+Route::post('sensors/data', function(Request $request) {
+    return SensorData::create($request->all());
 });
 
 Route::post('sensors', function(Request $request) {
