@@ -75,17 +75,18 @@ Route::get('sensors/{id}', function($id) {
 });
 
 Route::get('sensors/{id}/data', function($id) {
-    return SensorData::where("sensor_id", $id)->get();
-});
-Route::get('sensors/{id}/data/key', function($id) {
-  //  return SensorData::select("key")->where("sensor_id", $id)->groupBy("key")->get();
-    return SensorData::select([
+      return SensorData::select([
         "key", DB::raw("AVG(value) value"), 
         DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H') date"),  
         DB::raw("MAX(created_at) created_at")])->
             where("sensor_id", $id)->
             groupBy('date')->
             groupBy("key")->get();
+});
+
+Route::get('sensors/{id}/data/key', function($id) {
+    return SensorData::select("key")->where("sensor_id", $id)->groupBy("key")->get();
+
 
 });
 
