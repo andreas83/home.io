@@ -48,7 +48,7 @@
 			location: "",
 			description: ""
 		},
-                show: ""
+                show: false
             };
         },
         methods: {

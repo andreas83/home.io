@@ -9,9 +9,11 @@ import Welcome from './components/Welcome'
 import ListSensor from './components/sensor/ListSensor'
 import EditSensor from './components/sensor/EditSensor'
 
+import ShowDashboard from './components/dashboard/ShowDashboard'
+
 import ListDashboard from './components/dashboard/ListDashboard'
 import EditDashboard from './components/dashboard/EditDashboard'
-import AttachSensor from './components/dashboard/AttachSensor'
+import ConfigureSensor from './components/dashboard/ConfigureSensor'
 
 Vue.use(BootstrapVue);
 Vue.use(VueRouter)
@@ -20,6 +22,11 @@ Vue.use(VueRouter)
     const router = new VueRouter({
         mode: 'history',
         routes: [
+            {
+                path: '/',
+                name: 'ShowDashboard',
+                component: ShowDashboard,
+            },            
             {
                 path: 'home',
                 name: 'welcome',
@@ -47,9 +54,9 @@ Vue.use(VueRouter)
                 component: EditDashboard
             },
             {
-                path: '/dashboard/edit/:id/add/sensor',
-                name: 'AttachSensor',
-                component: AttachSensor
+                path: '/dashboard/:dashboard_id/configure/sensor/:sensor_id',
+                name: 'ConfigureSensor',
+                component: ConfigureSensor
             },              
         ],
     })

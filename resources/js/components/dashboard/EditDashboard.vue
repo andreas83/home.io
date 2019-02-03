@@ -4,9 +4,9 @@
             <h1 class="text-center"> Edit Dashboard {{dashboard.name}}</h1>
         </div>
         <div class="col-md-6">
-              <b-alert variant="success" :show="show" dismissible>Saved</b-alert>
+            <b-alert variant="success" :show="show" dismissible>Saved</b-alert>
             <form>
-               
+
                 <div class="form-group">
                     <label for="id">ID</label>
                     <input class="form-control" id="id" v-model="dashboard.id" disabled placeholder="id" />
@@ -20,12 +20,12 @@
                     <label for="name">Style</label>
                     <div>
                         <b-form-select v-model="dashboard.style" :options="options" class="mb-3" />
-                      </div>
+                    </div>
 
                 </div>
                 <input type="button" value="Delete" class="btn btn-small btn-danger" />
                 <input type="button" value="Save" class="btn btn-small btn-success" v-on:click="save()" />
-              
+
             </form>
         </div>
     </div>
@@ -45,10 +45,9 @@
                     style: "black"
 
                 }
-                ,options: [
-                    { value: "black", text: 'Black' },
-                    { value: 'clena', text: 'Clean' },
-        
+                , options: [
+                    {value: "black", text: 'Black'},
+                    {value: 'clena', text: 'Clean'},
                 ],
                 show: false
             };
@@ -60,11 +59,11 @@
 
                 if (dashboard.id == 0)
                 {
-                    
+
                     axios.post('/api/dashboards/', dashboard)
                             .then(function (response) {
                                 currentObj.dashboard = response.data;
-                                currentObj.show=true;
+                                currentObj.show = true;
                             })
                             .catch(function (error) {
                                 currentObj.output = error;
@@ -72,14 +71,14 @@
 
                 } else
                 {
-                    
+
                     axios.put('/api/dashboards/' + dashboard.id, {
                         name: dashboard.name,
 
                     })
                             .then(function (response) {
                                 currentObj.dashboard = response.data;
-                                currentObj.show=true;
+                                currentObj.show = true;
                             })
                             .catch(function (error) {
                                 currentObj.output = error;

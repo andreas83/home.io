@@ -43,9 +43,25 @@ Route::put('dashboards/{id}', function(Request $request, $id) {
 Route::post('dashboard/item', function(Request $request) {
     return DashboardItem::create($request->all());
 });
+
+Route::put('dashboard/item', function(Request $request) {
+    $DashBoardItem = DashboardItem::where("dashboard_id", $request->input('dashboard_id'))->where("sensor_id", $request->input('sensor_id'))->get();
+    
+    
+    $DashBoardItem->update($request->all());
+
+    return $DashBoardItem;
+});
+
 Route::get('dashboard/{id}/items', function($id) {
     return DashboardItem::where("dashboard_id", $id)->get();
 });
+
+Route::get('dashboard/{dashboard_id}/item/{item_id}', function($dashboard_id, $item_id) {
+    return DashboardItem::where("dashboard_id", $dashboard_id)->where("sensor_id", $item_id)->get();
+});
+
+
 
 
 Route::get('sensors', function() {

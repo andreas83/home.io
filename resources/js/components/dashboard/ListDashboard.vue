@@ -29,8 +29,8 @@
                         </td>
                     
                         <td>
-                            <router-link :to="{ name: 'AttachSensor', params: { id: dashboard.id }}">
-                                <input type="button" value="Sensors" class="btn btn-small btn-warning"  />
+                            <router-link :to="{ name: 'ShowDashboard', params: { id: dashboard.id }}">
+                                <input type="button" value="Show" class="btn btn-small btn-warning"  />
                             </router-link>
                             <router-link :to="{ name: 'EditDashboard', params: { id: dashboard.id }}">
                                 <input type="button" value="Edit" class="btn btn-small btn-success">
