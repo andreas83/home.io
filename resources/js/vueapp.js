@@ -15,8 +15,12 @@ import ListDashboard from './components/dashboard/ListDashboard'
 import EditDashboard from './components/dashboard/EditDashboard'
 import ConfigureSensor from './components/dashboard/ConfigureSensor'
 
+
+
+
 Vue.use(BootstrapVue);
-Vue.use(VueRouter)
+Vue.use(VueRouter);
+
 
 
     const router = new VueRouter({

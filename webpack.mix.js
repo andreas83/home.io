@@ -11,7 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 mix.browserSync({
-    proxy: '192.168.0.3',
+    proxy: 'home.io',
     ui: {
        port: 8080,
         weinre: {

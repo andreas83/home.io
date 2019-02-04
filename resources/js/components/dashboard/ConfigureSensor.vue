@@ -7,11 +7,12 @@
 
             <div class="chartcontainer">
 
-            <line-chart
-                v-if="loaded"
-                :chartdata="chartdata"
-                :options="options"/>
+                <apexchart width="500" type="area" :options="options" :series="chartdata"></apexchart>
+            
             </div>
+            
+            
+             
 
         </div>
         <div class="col-md-4">
@@ -27,7 +28,7 @@
 
                 </div>
 
-                <div v-if="sensor_data.length>0" class="form-group">
+                <div v-if="sensor_data.length>0 || sensor_item.chart_key" class="form-group">
                     <label for="">Charts</label>
                     <div>
                         <b-form-select v-model="sensor_item.chart_key" :options="chart_options" class="mb-3" />
@@ -35,16 +36,31 @@
 
                 </div>
                 <div v-if="sensor_item.chart_key === 'line'" class="form-group">
-                    <label for="">X-Axis</label>
+                    <label for="">X-Axis</label> 
                     <div>
-                        <b-form-select v-model="sensor_item.sensor_data_key" :options="sensor_key_options" class="mb-3" />
+                        {{sensor_item.sensor_data_key.name}}
+                        <b-form-select multiple v-model="sensor_item.sensor_data_key.name" :options="sensor_key_options" class="mb-3" />
+                        
                     </div>
 
                 </div>
+<!--                <b-tabs>
+                    <b-tab v-for="(item, index) in sensor_item.sensor_data_key.name" :title="item" :key="item" >
+                    <div class="form-group">
+                        <label for="name">Label</label>
+                        <input class="form-control" :v-model="sensor_item.sensor_data_key[index].name" placeholder="name" />
+                    </div>
+                      <swatches-picker :v-model="sensor_item.sensor_data_key[index].colors" /> 
+                    </b-tab>
+                    
+
+                </b-tabs>-->
+                
+                
                 <div v-if="sensor_item.chart_key === 'line'" class="form-group">
                     <label for="">Y-Axis</label>
                     <div>
-                        <b-form-select v-model="sensor_item.sensor_data_val" :options="sensor_val_options" class="mb-3" />
+                        <b-form-select v-model="sensor_item.sensor_data_val" :options="sensor_val_options" class="" />
                     </div>
 
                 </div>
@@ -55,16 +71,22 @@
             </form>
         </div>
         <div class="col-md-12">
-            <pre>{{sensor_data}}</pre>
+            <b-table striped hover :items="sensor_data"></b-table>
+            
         </div>
     </div>
 </template>
 
 <script>
-    import LineChart from '../Chart.vue'
+    import VueApexCharts from 'vue-apexcharts'
+
+    import { Swatches } from 'vue-color'
+
             export default {
                 name: 'ConfigureChart',
-                components: {LineChart},
+                components: {
+                    'apexchart': VueApexCharts ,  'swatches-picker': Swatches
+                },
                 mounted() {
                     this.loaded = false
 
@@ -73,6 +95,7 @@
                     if(this.$route.params.sensor_id>0)
                     {
                         this.getDashboardItemConfiguration(this.$route.params.dashboard_id,this.$route.params.sensor_id);
+                        this.getSensorData(this.$route.params.sensor_id);
                     }
                    
                 },
@@ -83,23 +106,63 @@
                         sensor_item: {
                             id: "",
                             dashboard_id: this.$route.params.id,
-                            sensor_data_key: "",
+                            sensor_data_key: [{
+                                    name:null,
+                                    label:null,
+                                    colors:null,
+                            },{
+                                    name:null,
+                                    label:null,
+                                    colors:null,
+                            }],
                             sensor_data_val: "",
                             created_at: "",
-                            chartdata: {},
+                            
                             loaded: false,
                             chart_key: "",
 
                         },
-                        sensor_data: "",
+                        colors:"",
+                        sensor_data: [],
                         show: false,
                         sensor_name_options: [],
                         sensor_key_options: [],
                         sensor_val_options: [{value: "created_at", text: "created"}, {value: "value", text: "value"}],
                         chart_options: [{value: "line", text: "Line Chart"}, {value: "bar", text: "Bar Chart"}],
                         loaded: false,
-                        chartdata: null,
-                        options: null
+                        chartdata: [{
+                            name: 'series-1',
+                            data: []
+                          }],
+                        options:  {
+                          chart: {
+                            stacked: false,
+                            zoom: {
+                              type: 'x',
+                              enabled: true
+                            },
+                            toolbar: {
+                              autoSelected: 'zoom'
+                            }
+                          },
+                          plotOptions: {
+                            line: {
+                              curve: 'smooth',
+                            }
+                          },
+                          dataLabels: {
+                            enabled: false
+                          },
+
+                          markers: {
+                            size: 0,
+                            style: 'full',
+                          },
+                          xaxis: {
+                             type: 'datetime',
+                          },
+                        },
+                        items: null
                     };
                 },
                 methods: {
@@ -135,8 +198,7 @@
                     },
                     getDashboardItemConfiguration(dashboard_id,sensor_id) {
                         let currentObj = this;
-                        this.getSensorKeyOptions(sensor_id);
-                        
+                                                
                         axios.get('/api/dashboard/'+dashboard_id+'/item/'+sensor_id, {})
                                 .then(function (response) {
                                     
@@ -200,46 +262,26 @@
                                 });
                     },
                     //get all Dashboard items 
-                    async getDashboardItems(sensor_id) {
+                     getDashboardItems(sensor_id) {
 
                         let currentObj = this;
 
-
-                        currentObj.options = {responsive: true,};
-
-                        currentObj.chartdata = {
-                            labels: [],
-                            datasets: [
-                                {
-                                    label: 'Temp',
-                                    backgroundColor: '#f87979',
-                                    data: []
-                                },
-                                {
-                                    label: 'Luftfeuchtigkeit',
-                                    backgroundColor: '#B0E0E6',
-                                    data: []
-                                },
-                            ]
-
-                        };
-
+                        currentObj.options.id="vuechart-example";
+                        
                         axios.get('/api/sensors/' + sensor_id + '/data', {})
                             .then(function (response) {
                                 //currentObj.sensor_data = response.data;
+                                 
                                 $.each(response.data, function (key, value) {
-
-                                    if (response.data[key].key == "temp")
-                                    {
-                                        currentObj.chartdata.labels.push(response.data[key].created_at);
-                                        currentObj.chartdata.datasets[0].data.push(response.data[key].value);
+                                    currentObj.chartdata[0].name="humidity";
+                                    if(response.data[key].key=="humidity"){
+                                        let t= response.data[key].created_at.split(/[- :]/);
+                                        var d = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+                                        currentObj.chartdata[0].data.push([d, response.data[key].value]);
                                     }
-                                    if (response.data[key].key == "humidity")
-                                    {
-                                        currentObj.chartdata.datasets[1].data.push(response.data[key].value);
-                                    }
+                                   
                                 });
-                                currentObj.loaded = true;
+                                
 
                             })
                             .catch(function (error) {
@@ -255,8 +297,8 @@
 <style scoped>
     .chartcontainer {
  
-      
-        height: 150px;
+        width:400px;
+        height: 300px;
         
     }
 </style>
