@@ -169,7 +169,8 @@
                                                     .then(function (response) {
 
                                                     currentObj.sensor_item_list[sensor_item_key].chartdata[0].data = response.data.filter(function(item) {
-                                                        if (item.key === response.data[key].sensor_data_key) {
+                                                      
+                                                        if (item.key === response.data[key].key) {
                                                           return false; 
                                                         }
                                                         return true;
