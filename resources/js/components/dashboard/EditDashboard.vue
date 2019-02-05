@@ -47,7 +47,7 @@
                 }
                 , options: [
                     {value: "black", text: 'Black'},
-                    {value: 'clena', text: 'Clean'},
+                    {value: 'clean', text: 'Clean'},
                 ],
                 show: false
             };
