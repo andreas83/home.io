@@ -7,7 +7,7 @@
             <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, sensor_id: item.id }}">
                 <input type="button" value="Sensors" class="btn btn-small btn-success"  />
             </router-link>
-
+        
             <apexchart width="500" :id="index" type="area" :options="item.options" :series="item.chartdata"></apexchart>
 
         </div>
@@ -168,39 +168,38 @@
                                             axios.get('/api/sensors/' + response.data[key].sensor_id + '/data', {})
                                                     .then(function (response) {
 
-
-                                                        currentObj.sensor_item_list[sensor_item_key].chartdata[0].data = response.data.map(function (item)
+                                                    currentObj.sensor_item_list[sensor_item_key].chartdata[0].data = response.data.filter(function(item) {
+                                                        if (item.key === response.data[key].sensor_data_key) {
+                                                          return false; 
+                                                        }
+                                                        return true;
+                                                      }).map(function (item)
                                                         {
                                                             let t = item.created_at.split(/[- :]/);
                                                             var d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
-
-                                                            return [d, item.value];
-
-                                                        });
                                                             
-
-
+                                                            return [d, item.value];
+                                                           
+                                                        });
+                                                        
+                                            
+                                                                                                                    
+                                                            
                                                     })
                                                     .catch(function (error) {
                                                         currentObj.output = error;
                                                     });
 
                                             
-
-
                                         } catch (e) {
                                             console.error(e)
                                         }
 
 
-
                                     });
 
                                     currentObj.loaded=true;
-
-
-
-
+                                    
                                 })
                                 .catch(function (error) {
                                     currentObj.output = error;
