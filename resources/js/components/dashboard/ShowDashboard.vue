@@ -114,6 +114,7 @@
 
                     this.getDashboardItems(1);
                     
+                    setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 1000);
 
                 },
                 methods: {
@@ -198,7 +199,7 @@
 
 
                                     });
-
+                               
                                     currentObj.loaded=true;
                                     
                                 })
