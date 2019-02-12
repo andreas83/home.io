@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-8">
             <h1 class="text-center"> Dashboard Configuration</h1>
-
+            {{sensor_item}}
 
             <div class="chartcontainer">
 
@@ -38,8 +38,8 @@
                 <div v-if="sensor_item.chart_key === 'line'" class="form-group">
                     <label for="">X-Axis</label> 
                     <div>
-                        {{sensor_item.sensor_data_key.name}}
-                        <b-form-select multiple v-model="sensor_item.sensor_data_key.name" :options="sensor_key_options" class="mb-3" />
+                        
+                        <b-form-select multiple v-model="sensor_item.sensor_data_key" :options="sensor_key_options" class="mb-3" />
                         
                     </div>
 
@@ -71,7 +71,7 @@
             </form>
         </div>
         <div class="col-md-12">
-            <b-table striped hover :items="sensor_data"></b-table>
+            <b-table striped hover dark :items="sensor_data" :fields="fields"></b-table>
             
         </div>
     </div>
@@ -101,20 +101,25 @@
                 },
                 data() {
                     return {
-
+                        fields: [
+                            {
+                              key: 'key',
+                              sortable: true
+                            },
+                            {
+                              key: 'value',
+                              sortable: true
+                            },
+                            {
+                              key: 'created_at',
+                              sortable: true
+                            }
+                        ],
                         id: "",
                         sensor_item: {
                             id: "",
                             dashboard_id: this.$route.params.id,
-                            sensor_data_key: [{
-                                    name:null,
-                                    label:null,
-                                    colors:null,
-                            },{
-                                    name:null,
-                                    label:null,
-                                    colors:null,
-                            }],
+                            sensor_data_key: [],
                             sensor_data_val: "",
                             created_at: "",
                             
@@ -125,6 +130,7 @@
                         colors:"",
                         sensor_data: [],
                         show: false,
+                        sensor_data_key:[],
                         sensor_name_options: [],
                         sensor_key_options: [],
                         sensor_val_options: [{value: "created_at", text: "created"}, {value: "value", text: "value"}],
@@ -188,7 +194,7 @@
                             axios.put('/api/dashboard/item/', {
                                 sensor_item })
                                     .then(function (response) {
-                                     
+                                        currentObj.sensor_item = response.data;
                                     })
                                     .catch(function (error) {
                                         currentObj.output = error;

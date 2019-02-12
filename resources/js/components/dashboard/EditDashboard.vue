@@ -14,12 +14,12 @@
 
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input class="form-control" id="name" v-model="dashboard.name" placeholder="name" />
+                    <input class="form-control" id="name" v-model="dashboard.attributes.name" placeholder="name" />
                 </div>
                 <div class="form-group">
                     <label for="name">Style</label>
                     <div>
-                        <b-form-select v-model="dashboard.style" :options="options" class="mb-3" />
+                        <b-form-select v-model="dashboard.attributes.style" :options="options" class="mb-3" />
                     </div>
 
                 </div>
@@ -32,17 +32,25 @@
 </template>
 
 <script>
+    import { mapActions, mapGetters, mapSetters } from 'vuex';    
     export default {
         mounted() {
-            this.getDashboards();
+            this.dashboard.id=this.$route.params.id;
+            this.$store.dispatch('dashboards/loadById', { id: this.dashboard.id })
+            .then(() => {
+              this.dashboard = this.$store.getters['dashboards/byId']({ id: this.dashboard.id });
+
+            });
         },
         data() {
             return {
                 id: "",
                 dashboard: {
                     id: "0",
-                    name: "",
-                    style: "black"
+                    attributes: {
+                        name: "",
+                        style: "black"
+                    }
 
                 }
                 , options: [
@@ -54,53 +62,36 @@
         },
         methods: {
             save() {
-                let currentObj = this;
-                let dashboard = currentObj.dashboard;
+       
 
-                if (dashboard.id == 0)
+                if (this.dashboard.id > 0)
                 {
-
-                    axios.post('/api/dashboards/', dashboard)
-                            .then(function (response) {
-                                currentObj.dashboard = response.data;
-                                currentObj.show = true;
-                            })
-                            .catch(function (error) {
-                                currentObj.output = error;
-                            });
+                    const dashboard = this.$store.getters['dashboards/byId']({ id: this.dashboard.id });
+                    dashboard.attributes.name = this.dashboard.attributes.name;
+                    dashboard.attributes.style = this.dashboard.attributes.style;
+                    
+                    const res= this.$store.dispatch('dashboards/update', dashboard);
+                    this.show=true;
+              
 
                 } else
                 {
 
-                    axios.put('/api/dashboards/' + dashboard.id, {
-                        name: dashboard.name,
-
-                    })
-                            .then(function (response) {
-                                currentObj.dashboard = response.data;
-                                currentObj.show = true;
-                            })
-                            .catch(function (error) {
-                                currentObj.output = error;
-                            });
+                    
 
                 }
             },
-            getDashboards() {
-                let currentObj = this;
-                if (this.$route.params.id == 0) {
-                    currentObj.dashboard.id = 0;
-                    currentObj.dashboard.name = "";
-                    return true;
-                }
-                axios.get('/api/dashboards/' + this.$route.params.id, {})
-                        .then(function (response) {
-                            currentObj.dashboard = response.data;
-                        })
-                        .catch(function (error) {
-                            currentObj.output = error;
-                        });
-            }
+            
+        },
+        computed: {
+           
+            ...mapGetters({
+                    getDashboard: 'dashboard/byId',
+                    
+                    },
+             
+            
+            ),                    
         }
     }
 </script>

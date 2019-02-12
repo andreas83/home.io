@@ -21,5 +21,5 @@ mix.browserSync({
 });
 
 mix.js('resources/js/app.js', 'public/js')
-   .js('resources/js/vueapp.js', 'public/js').sourceMaps()
+   .js('resources/js/vueapp.js', 'public/js').version().sourceMaps()
    .sass('resources/sass/app.scss', 'public/css');

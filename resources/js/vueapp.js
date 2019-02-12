@@ -2,22 +2,23 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import Vue from 'vue'
+import Vuex from 'vuex'
+
 import BootstrapVue from 'bootstrap-vue'
 import VueRouter from 'vue-router'
 import App from './components/App'
+
 import Welcome from './components/Welcome'
 import ListSensor from './components/sensor/ListSensor'
 import EditSensor from './components/sensor/EditSensor'
-
 import ShowDashboard from './components/dashboard/ShowDashboard'
-
 import ListDashboard from './components/dashboard/ListDashboard'
 import EditDashboard from './components/dashboard/EditDashboard'
 import ConfigureSensor from './components/dashboard/ConfigureSensor'
+import axios from 'axios';
 
 
-
-
+Vue.use(Vuex);
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
@@ -65,8 +66,33 @@ Vue.use(VueRouter);
         ],
     })
     
+    import { Store } from 'vuex';
+    import { mapResourceModules } from '@reststate/vuex';
+    const api = axios.create({
+      baseURL: 'http://localhost:3000/api/v1/',
+      headers: {
+        'Content-Type': 'application/vnd.api+json',
+
+      },
+    });
+    
+    const store = new Store({
+        modules: {
+            ...mapResourceModules({
+            names: [
+              'sensors',
+              'dashboards',
+              'sensorDatas',
+            ],
+            httpClient: api,
+          }),
+        },
+      });
+    
+    
     const app = new Vue({
         el: '#app',
         components: { App },
+        store: store,
         router,
     });

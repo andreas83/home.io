@@ -3,13 +3,13 @@
         <div class="col-md-6">
             <h1 class="text-center">Sensor Configuration</h1>
 
-            <div><pre>{{ rawData }}</pre></div>
+   
         </div>
         <div class="col-md-6">
             <router-link :to="{ name: 'EditSensor', params: { id: 0 }}">
                 <input type="button" value="Add Sensor" class="btn btn-small btn-success" >
             </router-link>
-
+            
             <table class="table table-hover table-dark">
                 <thead>
                     <tr>
@@ -25,13 +25,13 @@
                             {{ sensor.id}}
                         </td>
                         <td>
-                            {{ sensor.name }}
+                            {{ sensor.attributes.name }}
                         </td>
                         <td>
-                            {{ sensor.location }}
+                            {{ sensor.attributes.location }}
                         </td>
                         <td>
-                            <input type="button" value="RAW Data" class="btn btn-small btn-warning" v-on:click="getSensorData(sensor.id)" />
+                            
 
                             <router-link :to="{ name: 'EditSensor', params: { id: sensor.id }}">
                                 <input type="button" value="Edit" class="btn btn-small btn-success">
@@ -47,42 +47,31 @@
 </template>
 
 <script>
+    import { mapActions, mapGetters } from 'vuex';
     export default {
         mounted() {
-            console.log('Component mounted.')
-            this.getSensors();
+            this.loadAllSensors();
         },
         data() {
             return {
-                sensors: "",
-                rawData: ""
+    
             };
         },
         methods: {
-            getSensorData(id) {
-                let currentObj = this;
-
-                axios.get('/api/sensors/' + id + '/data', {})
-                        .then(function (response) {
-                            currentObj.rawData = response.data;
-                        })
-                        .catch(function (error) {
-                            currentObj.output = error;
-                        });
-            },
-            getSensors() {
-                let currentObj = this;
-                axios.get('/api/sensors/', {})
-                        .then(function (response) {
-                            currentObj.sensors = response.data;
-                        })
-                        .catch(function (error) {
-                            currentObj.output = error;
-                        });
-            },
+            ...mapActions({
+                loadAllSensors: 'sensors/loadAll',
+            }),
+            
+            
             deleteSensor(id) {
-
+                const sensorId = { id: id };
+                this.$store.dispatch('sensors/delete', sensorId);                
             }
+        },
+        computed: {
+            ...mapGetters({
+              sensors : 'sensors/all',
+            }),
         }
     }
 </script>

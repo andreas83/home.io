@@ -70,6 +70,6 @@
 	<app></app>
     </div>        
 
- <script type="text/javascript" src="/js/vueapp.js"></script>
+ <script type="text/javascript" src="{{ mix('/js/vueapp.js') }}"></script>
     </body>
 </html>

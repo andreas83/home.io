@@ -16,17 +16,17 @@
 
 
         <div class="col-md-4 col-sm-12 dbitem">
-            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, sensor_id:1 }}">
+            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, sensor_id:0 }}">
                 <input type="button" value="Sensors" class="btn btn-small btn-warning"  />
             </router-link>
         </div>
         <div class="col-md-4 col-sm-12 dbitem">
-            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, sensor_id:1 }}">
+            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, sensor_id:0 }}">
                 <input type="button" value="Sensors" class="btn btn-small btn-warning"  />
             </router-link>
         </div>
         <div class="col-md-4 col-sm-12  dbitem">
-            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, sensor_id:1 }}">
+            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, sensor_id:0 }}">
                 <input type="button" value="Sensors" class="btn btn-small btn-warning"  />
             </router-link>
         </div>
@@ -114,7 +114,7 @@
 
                     this.getDashboardItems(1);
                     
-                    setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 1000);
+                    setTimeout(function(){ window.dispatchEvent(new Event('resize')); }, 3000);
 
                 },
                 methods: {
@@ -123,16 +123,33 @@
 
                         let currentObj = this;
                         axios.get('/api/dashboard/' + dashboard_id + '/items/', {})
-                                .then(function (response) {
+                                .then(function (ConfigResponse) {
 
 
-                                    currentObj.sensor_item_list = response.data;
-
-                                    $.each(response.data, function (key, value) {
+                                    currentObj.sensor_item_list = ConfigResponse.data;
+                            
+                                    
+                                    let configArray=[];
+                                    
+                                    let xconfig=[];
+                                    $.each(ConfigResponse.data, function (key, value) {
                                         try {
 
                                             let sensor_item_key = key;
                                             
+                                            configArray=[];
+                                            xconfig=JSON.parse(ConfigResponse.data[sensor_item_key].sensor_data_key);
+                                            $.each(xconfig, function (key, value) {
+                                 
+                                                configArray.push({
+                                                    name: value,
+                                                    data: []
+                                                });
+                                            });
+                                            
+                                            
+                                            
+                                            currentObj.sensor_item_list[sensor_item_key].chartdata = configArray;
                                             currentObj.sensor_item_list[sensor_item_key].options = {
                                                 chart: {
                                                     stacked: false,
@@ -161,30 +178,34 @@
                                                     type: 'datetime',
                                                 },
                                             };
-                                            currentObj.sensor_item_list[sensor_item_key].chartdata = [{
-                                                name: response.data[key].sensor_id,
-                                                data: []
-                                            }];
-                                            currentObj.sensor_item_list[sensor_item_key].sensor_id=response.data[key].sensor_id;
-                                            axios.get('/api/sensors/' + response.data[key].sensor_id + '/data', {})
+                                             
+                                            currentObj.sensor_item_list[sensor_item_key].sensor_id=ConfigResponse.data[key].sensor_id;
+                                            axios.get('/api/sensors/' + ConfigResponse.data[key].sensor_id + '/data', {})
                                                     .then(function (response) {
+                                                       
+                
+                                                    //console.log(currentObj.sensor_item_list[sensor_item_key].chartdata);
+                                               
+                                               
+                                                     $.each(currentObj.sensor_item_list[sensor_item_key].chartdata, function (key, value) {
+                                                        console.log(key);
+                                                        currentObj.sensor_item_list[sensor_item_key].chartdata[key].data = response.data.filter(function(item) {
 
-                                                    currentObj.sensor_item_list[sensor_item_key].chartdata[0].data = response.data.filter(function(item) {
-                                                      
-                                                        if (item.key === response.data[key].key) {
-                                                          return false; 
-                                                        }
-                                                        return true;
-                                                      }).map(function (item)
-                                                        {
-                                                            let t = item.created_at.split(/[- :]/);
-                                                            var d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
-                                                            
-                                                            return [d, item.value];
-                                                           
-                                                        });
-                                                        
+                                                            if (item.key === value) {
+                                                                return true; 
+                                                            }
+                                                            return false;
+                                                          }).map(function (item)
+                                                            {
+
+                                                                let t = item.created_at.split(/[- :]/);
+                                                                var d = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
+
+                                                                return [d, item.value];
+
+                                                            });
                                             
+                                                    });
                                                                                                                     
                                                             
                                                     })

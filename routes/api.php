@@ -1,10 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Sensor;
-use App\SensorData;
-use App\Dashboard;
-use App\DashboardItem;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +17,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+JsonApi::register('v1')->routes(function ($api) {
+    $api->resource('sensors');
+    $api->resource('sensorDatas');
+    $api->resource('dashboards');
+    $api->resource('dashboardItems');
+    
+    
+});
+
+/*
 
 Route::get('dashboards', function() {
 
@@ -41,16 +47,25 @@ Route::put('dashboards/{id}', function(Request $request, $id) {
 });
 
 Route::post('dashboard/item', function(Request $request) {
-    return DashboardItem::create($request->all());
+    $res=$request->all();
+    $res['sensor_data_key']= json_encode($res['sensor_data_key']);
+    return DashboardItem::create($res);
 });
 
 Route::put('dashboard/item', function(Request $request) {
-    $DashBoardItem = DashboardItem::where("dashboard_id", $request->input('dashboard_id'))->where("sensor_id", $request->input('sensor_id'))->get();
+    $res=$request->all();
+    $res=$res['sensor_item'];
     
-    
-    $DashBoardItem->update($request->all());
-
-    return $DashBoardItem;
+    $DashBoardItem = DashboardItem::where("dashboard_id", $res['dashboard_id'])->where("sensor_id", $res['sensor_id'])->get();
+ 
+    foreach($DashBoardItem as $item)
+    {
+        $res['sensor_data_key']= json_encode($res['sensor_data_key']);
+        $res['sensor_data_key']= "";
+        $item->update($res);
+    }
+    $DashBoardItem[0]->sensor_data_key=json_decode($DashBoardItem[0]->sensor_data_key);
+    return $DashBoardItem[0];
 });
 
 Route::get('dashboard/{id}/items', function($id) {
@@ -110,3 +125,4 @@ Route::delete('sensors/{id}', function($id) {
 
     return 204;
 });
+*/
