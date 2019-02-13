@@ -22,7 +22,7 @@ Vue.use(Vuex);
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
-
+Vue.component('sensor-datatable', require('./components/sensorData/Table').default);
 
     const router = new VueRouter({
         mode: 'history',
@@ -59,7 +59,7 @@ Vue.use(VueRouter);
                 component: EditDashboard
             },
             {
-                path: '/dashboard/:dashboard_id/configure/sensor/:sensor_id',
+                path: '/dashboard/:dashboard_id/configure/item/:item_id',
                 name: 'ConfigureSensor',
                 component: ConfigureSensor
             },              
@@ -83,6 +83,7 @@ Vue.use(VueRouter);
               'sensors',
               'dashboards',
               'sensorDatas',
+              'dashboardItems',
             ],
             httpClient: api,
           }),

@@ -70,14 +70,29 @@
                     dashboard.attributes.name = this.dashboard.attributes.name;
                     dashboard.attributes.style = this.dashboard.attributes.style;
                     
-                    const res= this.$store.dispatch('dashboards/update', dashboard);
-                    this.show=true;
+                    const res= this.$store.dispatch('dashboards/update', dashboard).then(() => {
+                        this.show=true;
+                    });
+                    
               
 
                 } else
                 {
 
-                    
+                    const recordData = {
+                        attributes: {
+                          name: this.dashboard.attributes.name,
+                          style: this.dashboard.attributes.style,
+                          
+                        },
+                      };
+                      
+                    this.$store.dispatch('dashboards/create', recordData).then(() => {
+                      
+                        const dashboard = this.$store.getters['dashboards/lastCreated'];
+                        this.dashboard=dashboard;
+                        this.show=true;
+                    });                    
 
                 }
             },
@@ -87,7 +102,7 @@
            
             ...mapGetters({
                     getDashboard: 'dashboard/byId',
-                    
+                    createdDashboard: 'dashboard/lastCreated',
                     },
              
             

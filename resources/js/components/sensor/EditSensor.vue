@@ -2,16 +2,8 @@
     <div class="row">
         <div class="col-md-6">
             <h1 class="text-center"> Edit Sensor</h1>
-            <b-table  v-if="hasNext" striped hover dark :items="sensorPage" @sort-changed="sortingChanged" no-local-sorting  :fields="fields"></b-table>
-            <div v-for="page in page">
-                {{page.attributes}}
-
-            </div>
-            <a class="btn btn-lg" v-if="hasPrev" v-on:click="loadNextPage(true)">Show prev Page</a>
-            <a class="btn btn-lg" v-if="hasNext" v-on:click="loadNextPage(false)">Show next Page</a>
-            <p  v-if="hasNext">Page:{{page}}</p>
+            <sensor-datatable  v-bind:sensor_id="sensor.id"></sensor-datatable>
           
-
         </div>
         <div class="col-md-6">
             <b-alert variant="success" :show="show" dismissible>Saved</b-alert>
@@ -164,9 +156,11 @@
                     sensor.attributes.name = this.sensor.attributes.name;
                     sensor.attributes.location = this.sensor.attributes.location;
                     sensor.attributes.description = this.sensor.attributes.description;
-                    const res= this.$store.dispatch('sensors/update', sensor);
-                    this.show=true;
-                }
+                    const res= this.$store.dispatch('sensors/update', sensor).then(() => {
+                        this.show=true;
+                    });
+                    
+                }   
                 else{
                     
                     const recordData = {
@@ -176,10 +170,13 @@
                           description: this.sensor.attributes.description,
                         },
                       };
-                      this.$store.dispatch('sensors/create', recordData);
                       
-                     const sensor = this.$store.getters['sensors/all'];
-                    
+                    this.$store.dispatch('sensors/create', recordData).then(() => {
+                      
+                        const sensor = this.$store.getters['sensors/lastCreated'];
+                        this.sensor=sensor;
+                        this.show=true;
+                    });
                      
 
                 }
@@ -205,6 +202,7 @@
             ...mapGetters({
                     getSensors: 'sensors/byId',
                     sensorPageRaw: 'sensorDatas/page',
+                    createdSensor: 'sensors/lastCreated',
                     hasNext: 'sensorDatas/hasNext',
                     hasPrev: 'sensorDatas/hasPrevious',
                     },

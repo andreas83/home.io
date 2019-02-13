@@ -50,6 +50,7 @@ class Validators extends AbstractValidators
     {
          return [
             'filter.key' => 'filled|string',
+            'filter.sensor_id' => 'integer',
             
         ];
     }

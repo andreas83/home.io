@@ -34,6 +34,10 @@ class Adapter extends AbstractAdapter
      */
     protected function filter($query, Collection $filters)
     {
+        
+        if ($key = $filters->get('sensor_id')) {
+            $query->where('sensor_datas.sensor_id', '=', $key);
+        }
         if ($key = $filters->get('key')) {
             $query->where('sensor_datas.key', '=', $key);
         }
