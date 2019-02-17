@@ -32,7 +32,9 @@ class Schema extends SchemaProvider
         return [
             'dashboard_id' => $resource->dashboard_id,
             'sensor_id' => $resource->sensor_id,
-            'sensor_data_key' => $resource->sensor_data_key,
+            'chart_key' => $resource->chart_key,
+
+            'sensor_data_key' => json_decode($resource->sensor_data_key),
             'sensor_data_val' => $resource->sensor_data_val,
             'created_at' => $resource->created_at->toAtomString(),
             'updated_at' => $resource->updated_at->toAtomString(),

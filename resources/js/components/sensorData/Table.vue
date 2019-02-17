@@ -17,7 +17,7 @@
         mounted() {
 
         this.setPageOptions();
-        console.log(this.sensor_id);
+       
         
         this.loadPage(
                 {options:this.options}
@@ -110,6 +110,16 @@
             },
 
 
+        },
+        
+        watch: {
+             sensor_id: function (val) {
+                this.page=1;
+                this.setPageOptions();
+                this.loadPage(
+                        {options:this.options}
+                );
+              },
         },
         computed: {
             sensorPage: function(){

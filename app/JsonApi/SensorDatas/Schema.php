@@ -32,7 +32,7 @@ class Schema extends SchemaProvider
         return [
             'key' => $resource->key,
             'value' => $resource->value,
-            'created_at' => $resource->created_at->toAtomString(),
+            'created_at' => $resource->created_at->format("Y-m-d H:i:s"),
         ];
     }
 }

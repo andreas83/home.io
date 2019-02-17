@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use App\SensorData;
+use App\Http\Controllers\Api;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,9 +23,17 @@ JsonApi::register('v1')->routes(function ($api) {
     $api->resource('sensorDatas');
     $api->resource('dashboards');
     $api->resource('dashboardItems');
-    
-    
+
+
 });
+
+//since json api specification does not support
+//aggregation we need to make it by ourself.
+
+Route::get('api/v1/sensorDatas/{id}/data/key', function($id) {
+    return SensorData::select("key")->where("sensor_id", $id)->groupBy("key")->get();
+});
+
 
 /*
 
@@ -55,9 +64,9 @@ Route::post('dashboard/item', function(Request $request) {
 Route::put('dashboard/item', function(Request $request) {
     $res=$request->all();
     $res=$res['sensor_item'];
-    
+
     $DashBoardItem = DashboardItem::where("dashboard_id", $res['dashboard_id'])->where("sensor_id", $res['sensor_id'])->get();
- 
+
     foreach($DashBoardItem as $item)
     {
         $res['sensor_data_key']= json_encode($res['sensor_data_key']);
@@ -80,19 +89,19 @@ Route::get('dashboard/{dashboard_id}/item/{item_id}', function($dashboard_id, $i
 
 
 Route::get('sensors', function() {
-    // If the Content-Type and Accept headers are set to 'application/json', 
+    // If the Content-Type and Accept headers are set to 'application/json',
     // this will return a JSON structure. This will be cleaned up later.
     return Sensor::all();
 });
- 
+
 Route::get('sensors/{id}', function($id) {
     return Sensor::find($id);
 });
 
 Route::get('sensors/{id}/data', function($id) {
       return SensorData::select([
-        "key", DB::raw("AVG(value) value"), 
-        DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H') date"),  
+        "key", DB::raw("AVG(value) value"),
+        DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H') date"),
         DB::raw("MAX(created_at) created_at")])->
             where("sensor_id", $id)->
             groupBy('date')->
