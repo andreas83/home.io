@@ -29,11 +29,14 @@ JsonApi::register('v1')->routes(function ($api) {
 
 //since json api specification does not support
 //aggregation we need to make it by ourself.
-
 Route::get('api/v1/sensorDatas/{id}/data/key', function($id) {
     return SensorData::select("key")->where("sensor_id", $id)->groupBy("key")->get();
 });
 
+//@TODO: can be removed soon (only needed for old sensors)
+Route::post('sensors/data', function(Request $request) {
+    return SensorData::create($request->all());
+});
 
 /*
 

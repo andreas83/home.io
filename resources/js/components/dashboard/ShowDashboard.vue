@@ -77,7 +77,8 @@
                                         },
                                         toolbar: {
                                             autoSelected: 'zoom'
-                                        }
+                                        },
+
                                     },
                                     plotOptions: {
                                         line: {
@@ -140,15 +141,17 @@
                             let sensor_id=currentObj.dashboard_item_list[index].attributes.sensor_id;
                             let sensor_data_key=currentObj.dashboard_item_list[index].attributes.sensor_data_key;
                             let chartData=[];
+                            let color=[];
                             for(let key_index in sensor_data_key)
                             {
                                 let sensor_key = Object.keys(sensor_data_key[key_index]);
                                 sensor_key= sensor_key[0];
 
                                 let sensor_name=sensor_data_key[key_index][sensor_key].name;
-
+                                color.push(sensor_data_key[key_index][sensor_key].color.hex);
                                 let prepare_chartdata={};
                                 prepare_chartdata.name=sensor_name;
+
                                 prepare_chartdata.data=this.getSensorData(sensor_id,sensor_key);
                                 chartData.push(prepare_chartdata);
                             }
@@ -163,6 +166,10 @@
                                     toolbar: {
                                         autoSelected: 'zoom'
                                     }
+                                },
+                                colors: color,
+                                fill: {
+                                  colors:color
                                 },
                                 plotOptions: {
                                     line: {
@@ -179,6 +186,7 @@
                                 },
                                 xaxis: {
                                     type: 'datetime',
+
                                 },
                             }
                             currentObj.dashboard_item_list[index].chartdata=chartData;

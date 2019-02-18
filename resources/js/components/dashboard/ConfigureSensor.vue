@@ -50,7 +50,10 @@
 
                            <input class="form-control" v-model="selected_values[item].name"  placeholder="" />
                         </div>
-                        <swatches-picker v-model="selected_values[item].color" />
+                        <div class="form-group">
+
+                          <swatches-picker v-model="selected_values[item].color" />
+                        </div>
 
                     </b-tab>
 
@@ -66,7 +69,7 @@
 
                 </div>
 
-                <input type="button" value="Delete" class="btn btn-small btn-danger" />
+                <input type="button" value="Delete" class="btn btn-small btn-danger" v-on:click="deleteDashboardItem()" />
                 <input type="button" value="Save" class="btn btn-small btn-success" v-on:click="save()" />
 
             </form>
@@ -115,13 +118,14 @@
                                   let sensor_key=Object.keys(this.dashboard_item.attributes.sensor_data_key[index])[0];
                                   let sensor_name=this.dashboard_item.attributes.sensor_data_key[index][sensor_key].name;
                                   let sensor_color=this.dashboard_item.attributes.sensor_data_key[index][sensor_key].color;
-                                  sensor_color="";
 
 
-                                  this.selected_keys.push(sensor_key);
+
+
 
                                   let config = { name : sensor_name, color: sensor_color }
                                   this.selected_values[sensor_key] = config;
+                                  this.selected_keys.push(sensor_key);
                                 }
 
 
@@ -211,9 +215,9 @@
                         let currentObj = this;
 
                         let key_config=[];
-                        for (let index in this.selected_keys)
+                        for (let index in currentObj.selected_keys)
                         {
-                          let key_name=this.selected_keys[index];
+                          let key_name=currentObj.selected_keys[index];
 
                           key_config.push(
                             {
@@ -261,7 +265,10 @@
                         }
                     },
 
-
+                    deleteDashboardItem() {
+                        const Id = { id: this.dashboard_item.id };
+                        this.$store.dispatch('dashboardItems/delete', Id);
+                    },
 
                     getItemConfig(id){
 
@@ -280,7 +287,7 @@
                                         currentObj.sensor_key_options.push({"value": response.data[key].key, "text": response.data[key].key});
                                         if(typeof currentObj.selected_values[response.data[key].key] === 'undefined')
                                         {
-                                          currentObj.selected_values[response.data[key].key] = {};
+                                          currentObj.selected_values[response.data[key].key] = {name:"", color:""};
                                         }
                                     });
                                 })
