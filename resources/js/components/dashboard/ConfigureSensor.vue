@@ -8,7 +8,7 @@
 
             <div class="chartcontainer">
 
-                <apexchart width="500" type="area" :options="options" :series="chartdata"></apexchart>
+               <LineChart v-if ="loaded" v-bind:dashboardItem="dashboard_item"></LineChart>
 
             </div>
 
@@ -325,10 +325,5 @@
 </script>
 
 <style scoped>
-    .chartcontainer {
-
-        width:400px;
-        height: 300px;
-
-    }
+  
 </style>

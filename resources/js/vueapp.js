@@ -23,6 +23,8 @@ Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 
 Vue.component('sensor-datatable', require('./components/sensorData/Table').default);
+Vue.component('LineChart', require('./components/charts/Line').default);
+Vue.component('BarChart', require('./components/charts/Bar').default);
 
     const router = new VueRouter({
         mode: 'history',
@@ -31,28 +33,28 @@ Vue.component('sensor-datatable', require('./components/sensorData/Table').defau
                 path: '/',
                 name: 'ShowDashboard',
                 component: ShowDashboard,
-            },            
+            },
             {
                 path: 'home',
                 name: 'welcome',
                 component: Welcome,
             },
-            
+
             {
                 path: '/list/sensor',
                 name: 'ListSensor',
                 component: ListSensor
-            },    
+            },
             {
                 path: '/sensor/edit/:id',
                 name: 'EditSensor',
                 component: EditSensor
-            },   
+            },
             {
                 path: '/list/dashboard',
                 name: 'ListDashboard',
                 component: ListDashboard
-            },    
+            },
             {
                 path: '/dashboard/edit/:id',
                 name: 'EditDashboard',
@@ -62,10 +64,10 @@ Vue.component('sensor-datatable', require('./components/sensorData/Table').defau
                 path: '/dashboard/:dashboard_id/configure/item/:item_id',
                 name: 'ConfigureSensor',
                 component: ConfigureSensor
-            },              
+            },
         ],
     })
-    
+
     import { Store } from 'vuex';
     import { mapResourceModules } from '@reststate/vuex';
     const api = axios.create({
@@ -75,7 +77,7 @@ Vue.component('sensor-datatable', require('./components/sensorData/Table').defau
 
       },
     });
-    
+
     const store = new Store({
         modules: {
             ...mapResourceModules({
@@ -89,8 +91,8 @@ Vue.component('sensor-datatable', require('./components/sensorData/Table').defau
           }),
         },
       });
-    
-    
+
+
     const app = new Vue({
         el: '#app',
         components: { App },
