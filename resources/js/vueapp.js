@@ -25,6 +25,7 @@ Vue.use(VueRouter);
 Vue.component('sensor-datatable', require('./components/sensorData/Table').default);
 Vue.component('LineChart', require('./components/charts/Line').default);
 Vue.component('BarChart', require('./components/charts/Bar').default);
+Vue.component('TextLabel', require('./components/charts/TextLabel').default);
 
     const router = new VueRouter({
         mode: 'history',

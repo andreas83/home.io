@@ -10,6 +10,7 @@
 
             <LineChart v-if ="loaded && item.attributes.chart_key==='line'" v-bind:dashboardItem="item"></LineChart>
             <BarChart v-if ="loaded && item.attributes.chart_key==='bar'" v-bind:dashboardItem="item"></BarChart>
+            <TextLabel  v-if ="loaded && item.attributes.chart_key==='text'" v-bind:dashboardItem="item"></TextLabel>
         </div>
 
         <div class="col-md-4 col-sm-12 dbitem">
@@ -104,10 +105,12 @@
             }
 </script>
 
-<style scoped>
-
+<style>
+    body{
+      background-color:#000;
+    }
     .dbitem{
-        width: 200px;
+
         min-height: 300px;
         border:1px #c5c5c5 dashed;
     }
