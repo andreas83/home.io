@@ -34,7 +34,7 @@ Route::get('api/v1/sensorDatas/{id}/data/key', function($id) {
 });
 
 //@TODO: can be removed soon (only needed for old sensors)
-Route::post('sensors/data', function(Request $request) {
+Route::post('v1/sensors/data', function(Request $request) {
     return SensorData::create($request->all());
 });
 

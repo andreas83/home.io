@@ -8,8 +8,9 @@
 
             <div class="chartcontainer">
 
-               <LineChart v-if ="loaded" v-bind:dashboardItem="dashboard_item"></LineChart>
-
+               <LineChart v-if ="loaded && dashboard_item.attributes.chart_key==='line'" v-bind:dashboardItem="dashboard_item"></LineChart>
+               <BarChart v-if ="loaded && dashboard_item.attributes.chart_key==='bar'" v-bind:dashboardItem="dashboard_item"></BarChart>
+               <TextLabel  v-if ="loaded && dashboard_item.attributes.chart_key==='text'" v-bind:dashboardItem="dashboard_item"></TextLabel>
             </div>
 
 
@@ -136,7 +137,8 @@
                         });
 
                     }else{
-                      console.log("xx"+this.sensor_key_options);
+                      this.dashboard_item.attributes.dashboard_id=this.$route.params.dashboard_id;
+                      console.log(this.dashboard_item);
                     }
 
                 },
@@ -165,43 +167,10 @@
                         item:[],
                         sensor_key_options: [],
                         sensor_val_options: [{value: "created_at", text: "created"}, {value: "value", text: "value"}],
-                        chart_options: [{value: "line", text: "Line Chart"}, {value: "bar", text: "Bar Chart"}],
+                        chart_options: [{value: "line", text: "Line Chart"}, {value: "bar", text: "Bar Chart"}, {value: "text", text: "Text"}],
                         loaded: false,
-                        chartdata: [{
-                            name: 'series-1',
-                            data: []
-                          }],
-                        options:  {
-                          chart: {
-                            stacked: false,
-                            zoom: {
-                              type: 'x',
-                              enabled: true
-                            },
-                            toolbar: {
-                              autoSelected: 'zoom'
-                            }
-                          },
-                          plotOptions: {
-                            line: {
-                              curve: 'smooth',
-                            }
-                          },
-                          dataLabels: {
-                            enabled: false
-                          },
 
-                          markers: {
-                            size: 0,
-                            style: 'full',
-                          },
-                          xaxis: {
-                             type: 'datetime',
-                          },
-                        },
-                        items: null
-                    };
-                },
+                }},
 
 
                 methods: {
@@ -242,6 +211,7 @@
 
 
                           const res= this.$store.dispatch('dashboardItems/update', dashboardItem).then(() => {
+
                               this.show=true;
                           });
 
@@ -272,7 +242,7 @@
 
                     getItemConfig(id){
 
-                      this.getSensorKeyOptions(this.dashboard_item.attributes.sensor_id);
+                      this.getSensorKeyOptions(id);
                     },
 
                     getSensorKeyOptions(id) {
@@ -325,5 +295,5 @@
 </script>
 
 <style scoped>
-  
+
 </style>
