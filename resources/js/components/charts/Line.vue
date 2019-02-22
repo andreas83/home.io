@@ -153,6 +153,7 @@
       },
       watch: {
            dashboardItem: function (val) {
+             
               this.prepare();
 
             },

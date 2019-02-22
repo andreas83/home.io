@@ -5,12 +5,13 @@
         <div class="col-lg-4 col-md-12 col-sm-12  dbitem"   v-for="(item, index) in dashboard_item_list">
 
             <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, item_id: item.id }}">
-                <input type="button" value="Sensors" class="btn btn-small btn-success"  />
+                <input type="button" value="Sensors" class="btn btn-small btn-success flip"  />
             </router-link>
 
             <LineChart v-if ="loaded && item.attributes.chart_key==='line'" v-bind:dashboardItem="item"></LineChart>
             <BarChart v-if ="loaded && item.attributes.chart_key==='bar'" v-bind:dashboardItem="item"></BarChart>
             <TextLabel  v-if ="loaded && item.attributes.chart_key==='text'" v-bind:dashboardItem="item"></TextLabel>
+            <Liquid  v-if ="loaded && item.attributes.chart_key==='liquid'" v-bind:dashboardItem="item"></Liquid>
         </div>
 
         <div class="col-md-4 col-sm-12 dbitem">
@@ -109,9 +110,15 @@
     body{
       background-color:#000;
     }
+
     .dbitem{
 
-        min-height: 300px;
-        border:1px #c5c5c5 dashed;
+      border:2px solid #00455e;
+
+    	margin:10px;
+      -webkit-box-shadow: 6px 11px 11px -2px rgba(0,69,94,1);
+      -moz-box-shadow: 6px 11px 11px -2px rgba(0,69,94,1);
+      box-shadow: 6px 11px 11px -2px rgba(0,69,94,1);
+      
     }
 </style>

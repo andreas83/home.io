@@ -26,6 +26,7 @@ Vue.component('sensor-datatable', require('./components/sensorData/Table').defau
 Vue.component('LineChart', require('./components/charts/Line').default);
 Vue.component('BarChart', require('./components/charts/Bar').default);
 Vue.component('TextLabel', require('./components/charts/TextLabel').default);
+Vue.component('Liquid', require('./components/charts/Liquid').default);
 
     const router = new VueRouter({
         mode: 'history',
@@ -71,8 +72,9 @@ Vue.component('TextLabel', require('./components/charts/TextLabel').default);
 
     import { Store } from 'vuex';
     import { mapResourceModules } from '@reststate/vuex';
+  
     const api = axios.create({
-      baseURL: 'http://localhost:3000/api/v1/',
+      baseURL: window.axios.defaults.baseURL,
       headers: {
         'Content-Type': 'application/vnd.api+json',
 

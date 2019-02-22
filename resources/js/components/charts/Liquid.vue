@@ -60,7 +60,7 @@
 
               this.$store.dispatch('sensorDatas/loadPage', { options }).then(() => {
                   const sensorPageRaw = this.$store.getters['sensorDatas/page'];
-                  console.log(this.rawData[index].color);
+                  
                   this.default.waveColor=this.rawData[index].color;
                   this.loadLiquidFillGauge(this.rawData[index].indexname, sensorPageRaw[0].attributes.value, this.default);
                 });

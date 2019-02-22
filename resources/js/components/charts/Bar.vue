@@ -59,7 +59,7 @@
 
 
         prepare(){
-            console.log(this.dashboardItem);
+            
 
             let sensor_id=this.dashboardItem.attributes.sensor_id;
             let sensor_data_key=this.dashboardItem.attributes.sensor_data_key;

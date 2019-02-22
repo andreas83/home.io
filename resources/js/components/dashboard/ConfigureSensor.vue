@@ -11,6 +11,7 @@
                <LineChart v-if ="loaded && dashboard_item.attributes.chart_key==='line'" v-bind:dashboardItem="dashboard_item"></LineChart>
                <BarChart v-if ="loaded && dashboard_item.attributes.chart_key==='bar'" v-bind:dashboardItem="dashboard_item"></BarChart>
                <TextLabel  v-if ="loaded && dashboard_item.attributes.chart_key==='text'" v-bind:dashboardItem="dashboard_item"></TextLabel>
+               <Liquid  v-if ="loaded && dashboard_item.attributes.chart_key==='liquid'" v-bind:dashboardItem="dashboard_item"></Liquid>
             </div>
 
 
@@ -167,7 +168,7 @@
                         item:[],
                         sensor_key_options: [],
                         sensor_val_options: [{value: "created_at", text: "created"}, {value: "value", text: "value"}],
-                        chart_options: [{value: "line", text: "Line Chart"}, {value: "bar", text: "Bar Chart"}, {value: "text", text: "Text"}],
+                        chart_options: [{value: "line", text: "Line Chart"}, {value: "bar", text: "Bar Chart"}, {value: "liquid", text: "Liquid"}, {value: "text", text: "Text"}],
                         loaded: false,
 
                 }},

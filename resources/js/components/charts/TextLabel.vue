@@ -3,7 +3,7 @@
 
     <b-list-group dark>
 
-      <b-list-group-item v-for="(item) in txtData" >{{item.name}}: {{item.data[0][1]}} ( {{item.data[0][0]}})</b-list-group-item>
+      <b-list-group-item v-for="(item, index) in txtData" :key="index" >{{item.name}}: {{item.data[0][1]}} ( {{item.data[0][0]}})</b-list-group-item>
 
   </b-list-group>
 </div>
@@ -22,7 +22,7 @@
           }
         },
         mounted() {
-        
+
             this.prepare();
         },
       methods: {
