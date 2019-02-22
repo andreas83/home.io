@@ -250,7 +250,7 @@
 
                             let currentObj = this;
                             currentObj.sensor_key_options=[];
-                            axios.get('/api/v1/sensorDatas/' + id + '/data/key', {})
+                            axios.get('/sensorDatas/' + id + '/data/key', {})
                                 .then(function (response) {
                                     currentObj.sensor_key_options = [];
                                     $.each(response.data, function (key, value) {
