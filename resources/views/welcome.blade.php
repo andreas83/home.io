@@ -9,7 +9,9 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
         <link href="/css/app.css" rel="stylesheet" type="text/css">
-	<meta name="csrf-token" content="{{ csrf_token() }}">
+	       <meta name="csrf-token" content="{{ csrf_token() }}">
+         <meta name="api-base-url" content="{{ url('/api/v1/') }}" />
+
         <!-- Styles -->
         <style>
             html, body {
@@ -68,8 +70,8 @@
 
     <div id="app">
 	<app></app>
-    </div>        
+    </div>
 
- <script type="text/javascript" src="/js/vueapp.js"></script>
+ <script type="text/javascript" src="{{ mix('/js/vueapp.js') }}"></script>
     </body>
 </html>

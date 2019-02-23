@@ -25,7 +25,7 @@
                             {{ dashboard.id }}
                         </td>
                         <td>
-                            {{ dashboard.name }}
+                            {{ dashboard.attributes.name }}
                         </td>
                     
                         <td>
@@ -36,7 +36,7 @@
                                 <input type="button" value="Edit" class="btn btn-small btn-success">
                             </router-link>
 
-                            <input type="button" value="Delete" class="btn btn-small btn-danger" v-on:click="deleteDashboard(sensor.id)" />
+                            <input type="button" value="Delete" class="btn btn-small btn-danger" v-on:click="deleteDashboard(dashboard.id)" />
                         </td>
                     </tr>
                 </tbody>
@@ -48,33 +48,36 @@
 </template>
 
 <script>
+        
+    import { mapActions, mapGetters } from 'vuex';
     export default {
         mounted() {
-            this.getDashboard();
+            this.loadAllDashboards();
         },
         data() {
             return {
-                dashboards: "",
+    
                 
             };
         },
         methods: {
-            
-            getDashboard() {
-                let currentObj = this;
-                axios.get('/api/dashboards/', {})
-                        .then(function (response) {
-                            currentObj.dashboards = response.data;
-                        })
-                        .catch(function (error) {
-                            currentObj.output = error;
-                        });
-            },
-            deleteDashboard(id) {
+            ...mapActions({
+                loadAllDashboards: 'dashboards/loadAll',
+            }),
 
-            }
+            deleteDashboard(id) {
+                const Id = { id: id };
+                this.$store.dispatch('dashboards/delete', Id); 
+            },
+                       
+        },
+        computed: {
+            ...mapGetters({
+              dashboards: 'dashboards/all',
+            }),
         }
     }
+        
 </script>
 
 <style scoped>

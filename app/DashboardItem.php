@@ -14,4 +14,11 @@ class DashboardItem extends Model
     protected $fillable = [
         'sensor_id', 'dashboard_id', 'chart_key', 'sensor_data_val', 'sensor_data_key'
     ];
+
+
+    public function setSensorDataKeyAttribute($value)
+    {
+        $this->attributes['sensor_data_key'] = json_encode($value);
+    }
+
 }
