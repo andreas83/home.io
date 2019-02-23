@@ -29,3 +29,4 @@ Weiter ist geplant neben ÖL-Verbrauch auch Wasser und Strom zu erfassen und die
 ## Screenshot
 
 ![](https://social.codejungle.org/upload/5c4f982e7bacb4.55207020_Screenshot_20190129_005953.png)
+![](https://social.codejungle.org/upload/5c71103d1e2fd3.62064357_Screenshot_20190223_101637.png)
