@@ -1,9 +1,15 @@
     <template>
-      <div class="wrapper">
+      <div class="wrapper" v-bind:class="style">
         <div class="menu">
           <div class="app-menu">
             <ul class="list-unstyled components">
                 <router-link :to="{ name: 'ShowDashboard' }" class="nav-link">Home</router-link>
+                <div  v-for="dashboard in dashboards">
+                <router-link :to="{ name: 'ShowDashboard' , params: { id: dashboard.id }}" class="nav-link">{{dashboard.attributes.name}}</router-link>
+                <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: dashboard.id, item_id:0 }}"  class="nav-link">
+                    + Add Sensor to {{dashboard.attributes.name}}
+                </router-link>
+                </div>
                 <router-link :to="{ name: 'ListDashboard' }" class="nav-link" >Dashboard Configuration</router-link>
                 <router-link :to="{ name: 'ListSensor' }" class="nav-link" >Sensor Configuration</router-link>
 
@@ -13,30 +19,38 @@
 
         <div class="layout">
           <div class="header">
-             <div class="menu-icon"><i class="fa fa-align-justify"></i></div>
-
+             <div class="menu-icon"><i class="fas fas-align-justify"></i></div>
+            
            </div>
            <main>
-             <router-view></router-view>
+             <router-view @style-change="onStyleChange"></router-view>
            </main>
          </div>
       </div>
     </template>
     <script>
+        import { mapActions, mapGetters } from 'vuex';
         export default {
+          data() {
+            return{
+                style:"clean"
+            }
 
+          },
           mounted(){
+
+            this.loadAllDashboards();
             function toggleClassMenu() {
               myMenu.classList.add("menu--animatable");
-              if(!myMenu.classList.contains("menu--visible")) {
-                  myMenu.classList.add("menu--visible");
-              } else {
-                  myMenu.classList.remove('menu--visible');
-              }
+                if(!myMenu.classList.contains("menu--visible")) {
+                    myMenu.classList.add("menu--visible");
+                } else {
+                    myMenu.classList.remove('menu--visible');
+                }
               }
 
               function OnTransitionEnd() {
-              myMenu.classList.remove("menu--animatable");
+                myMenu.classList.remove("menu--animatable");
               }
 
               var myMenu = document.querySelector(".menu");
@@ -44,6 +58,21 @@
               myMenu.addEventListener("transitionend", OnTransitionEnd, false);
               oppMenu.addEventListener("click", toggleClassMenu, false);
               myMenu.addEventListener("click", toggleClassMenu, false);
+          },
+          methods: {
+              ...mapActions({
+                  loadAllDashboards: 'dashboards/loadAll',
+              }),
+              onStyleChange(val){
+                  this.style=val;
+                  this.$emit('style-change', val);
+              }
+
+          },
+          computed: {
+              ...mapGetters({
+                dashboards: 'dashboards/all',
+              }),
           }
 
         }
@@ -125,6 +154,18 @@
     body {
       margin: 0;
     }
+
+    .black{
+      background-color: #000;
+      color:#fff;
+    }
+
+    .clean{
+
+        background-color: #fff;
+
+    }
+
 
     .layout {
 

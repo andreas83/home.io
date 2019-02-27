@@ -33,6 +33,11 @@ Vue.component('Liquid', require('./components/charts/Liquid').default);
         routes: [
             {
                 path: '/',
+                name: 'ShowDefaultDashboard',
+                component: ShowDashboard,
+            },
+            {
+                path: '/dashboard/:id',
                 name: 'ShowDashboard',
                 component: ShowDashboard,
             },
@@ -72,7 +77,7 @@ Vue.component('Liquid', require('./components/charts/Liquid').default);
 
     import { Store } from 'vuex';
     import { mapResourceModules } from '@reststate/vuex';
-  
+
     const api = axios.create({
       baseURL: window.axios.defaults.baseURL,
       headers: {
@@ -101,4 +106,15 @@ Vue.component('Liquid', require('./components/charts/Liquid').default);
         components: { App },
         store: store,
         router,
+        data() {
+          return{
+              style:"clean"
+          }
+
+        },
+        methods:{
+          onStyleChange(key){
+            this.style=key;
+          }
+        }
     });

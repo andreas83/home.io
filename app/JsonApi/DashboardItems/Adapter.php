@@ -34,10 +34,12 @@ class Adapter extends AbstractAdapter
      */
     protected function filter($query, Collection $filters)
     {
-        // TODO
+      if ($key = $filters->get('dashboard_id')) {
+          $query->where('dashboard_id', '=', $key);
+      }
     }
 
-  
+
 
 
 

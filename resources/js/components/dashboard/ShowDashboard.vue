@@ -14,21 +14,6 @@
             <Liquid  v-if ="loaded && item.attributes.chart_key==='liquid'" v-bind:dashboardItem="item"></Liquid>
         </div>
 
-        <div class="col-md-4 col-sm-12 dbitem">
-            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, item_id:0 }}">
-                <input type="button" value="Sensors" class="btn btn-small btn-warning"  />
-            </router-link>
-        </div>
-        <div class="col-md-4 col-sm-12 dbitem">
-            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, item_id:0 }}">
-                <input type="button" value="Sensors" class="btn btn-small btn-warning"  />
-            </router-link>
-        </div>
-        <div class="col-md-4 col-sm-12  dbitem">
-            <router-link :to="{ name: 'ConfigureSensor', params: { dashboard_id: 1, item_id:0 }}">
-                <input type="button" value="Sensors" class="btn btn-small btn-warning"  />
-            </router-link>
-        </div>
     </div>
 </div>
 
@@ -44,9 +29,16 @@
                 data() {
                     return {
                         loaded:false,
-                        id: "",
+                        id: "1",
 
+                        dashboard: {
+                            id: "0",
+                            attributes: {
+                                name: "",
+                                style: "black"
+                            }
 
+                        },
 
                         dashboard_item_list: [
                             {
@@ -65,7 +57,14 @@
                     };
                 },
                 mounted() {
-                    this.getDashboardItems(1);
+
+                    this.id=this.$route.params.id;
+                    this.$store.dispatch('dashboards/loadById', { id: this.id })
+                    .then(() => {
+                      this.dashboard = this.$store.getters['dashboards/byId']({ id: this.id });
+                      this.$emit('style-change', this.dashboard.attributes.style)
+                    });
+                    this.getDashboardItems(this.id);
 
                 },
                 methods: {
@@ -102,14 +101,23 @@
 
 
                     ),
+                },
+                watch:{
+                  $route (to, from){
+                      this.id=this.$route.params.id;
+                      this.$store.dispatch('dashboards/loadById', { id: this.id })
+                      .then(() => {
+                        this.dashboard = this.$store.getters['dashboards/byId']({ id: this.id });
+                        this.$emit('style-change', this.dashboard.attributes.style);
+                      });
+                      this.getDashboardItems(this.id);
+                  }
                 }
             }
 </script>
 
 <style>
-    body{
-      background-color:#000;
-    }
+
 
     .dbitem{
 
@@ -119,6 +127,6 @@
       -webkit-box-shadow: 6px 11px 11px -2px rgba(0,69,94,1);
       -moz-box-shadow: 6px 11px 11px -2px rgba(0,69,94,1);
       box-shadow: 6px 11px 11px -2px rgba(0,69,94,1);
-      
+
     }
 </style>
