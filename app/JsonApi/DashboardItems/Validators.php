@@ -23,6 +23,8 @@ class Validators extends AbstractValidators
      */
     protected $allowedSortParameters = [];
 
+    protected $allowedFilteringParameters = ["dashboard_id"];
+
     /**
      * Get resource validation rules.
      *

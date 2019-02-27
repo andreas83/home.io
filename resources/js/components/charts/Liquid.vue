@@ -24,7 +24,7 @@
                 waveHeight: 0.05, // The wave height as a percentage of the radius of the wave circle.
                 waveCount: 1, // The number of full waves per width of the wave circle.
                 waveRiseTime: 1000, // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
-                waveAnimateTime: 18000, // The amount of time in milliseconds for a full wave to enter the wave circle.
+                waveAnimateTime: 2000, // The amount of time in milliseconds for a full wave to enter the wave circle.
                 waveRise: true, // Control if the wave should rise from 0 to it's full height, or start at it's full height.
                 waveHeightScaling: true, // Controls wave size scaling at low and high fill percentages. When true, wave height reaches it's maximum at 50% fill, and minimum at 0% and 100% fill. This helps to prevent the wave from making the wave circle from appear totally full or empty when near it's minimum or maximum fill.
                 waveAnimate: true, // Controls if the wave scrolls or is static.
@@ -220,7 +220,7 @@
                    .transition()
                    .duration(config.waveRiseTime)
                    .attr('transform','translate('+waveGroupXPosition+','+waveRiseScale(fillPercent)+')')
-                   .each("start", function(){ wave.attr('transform','translate(1,0)'); }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
+                   .on("start", function(){ wave.attr('transform','translate(1,0)'); }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
            } else {
                waveGroup.attr('transform','translate('+waveGroupXPosition+','+waveRiseScale(fillPercent)+')');
            }
@@ -233,10 +233,10 @@
                wave.attr('transform','translate('+waveAnimateScale(wave.attr('T'))+',0)');
                wave.transition()
                    .duration(config.waveAnimateTime * (1-wave.attr('T')))
-                   .ease('linear')
+                   .ease(d3.easeLinear)
                    .attr('transform','translate('+waveAnimateScale(1)+',0)')
                    .attr('T', 1)
-                   .each('end', function(){
+                   .on('end', function(){
                        wave.attr('T', 0);
                        animateWave(config.waveAnimateTime);
                    });
@@ -291,11 +291,11 @@
                        .duration(0)
                        .transition()
                        .duration(config.waveAnimate?(config.waveAnimateTime * (1-wave.attr('T'))):(config.waveRiseTime))
-                       .ease('linear')
+                       .ease(d3.easeLinear)
                        .attr('d', newClipArea)
                        .attr('transform','translate('+newWavePosition+',0)')
                        .attr('T','1')
-                       .each("end", function(){
+                       .on("end", function(){
                            if(config.waveAnimate){
                                wave.attr('transform','translate('+waveAnimateScale(0)+',0)');
                                animateWave(config.waveAnimateTime);
