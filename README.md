@@ -1,4 +1,6 @@
-# Home.io - DIY Gebäudemonitoring
+# Please find latest version at GITlab https://gitlab.com/andreas83/home.io
+
+## Home.io - DIY Gebäudemonitoring
 
 ## Boards
 3x ESP8266 nodemcu 
